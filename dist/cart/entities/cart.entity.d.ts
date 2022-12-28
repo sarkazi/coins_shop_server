@@ -1,7 +1,9 @@
 import { CoinEntity } from 'src/coins/entities/coin.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
-import { Base } from 'src/utils/base';
-export declare class CartEntity extends Base {
+export declare class CartEntity {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
     user: UserEntity;
     coins: CoinEntity[];
 }

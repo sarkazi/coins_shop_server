@@ -12,10 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoinEntity = void 0;
 const cart_entity_1 = require("../../cart/entities/cart.entity");
 const catedory_entity_1 = require("../../catedories/entities/catedory.entity");
-const base_1 = require("../../utils/base");
 const typeorm_1 = require("typeorm");
-let CoinEntity = class CoinEntity extends base_1.Base {
+let CoinEntity = class CoinEntity {
 };
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], CoinEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)({ name: 'created_at', type: 'timestamp' }),
+    __metadata("design:type", Date)
+], CoinEntity.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at', type: 'timestamp' }),
+    __metadata("design:type", Date)
+], CoinEntity.prototype, "updatedAt", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)

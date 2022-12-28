@@ -1,9 +1,26 @@
 import { CartEntity } from 'src/cart/entities/cart.entity'
-import { Base } from 'src/utils/base'
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm'
+//import { Base } from 'src/utils/base'
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 @Entity('users')
-export class UserEntity extends Base {
+export class UserEntity {
+  @PrimaryGeneratedColumn()
+  id: number
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  createdAt: Date
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  updatedAt: Date
+
   @Column()
   login: string
 

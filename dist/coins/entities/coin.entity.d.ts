@@ -1,7 +1,9 @@
 import { CartEntity } from 'src/cart/entities/cart.entity';
 import { CategoryEntity } from 'src/catedories/entities/catedory.entity';
-import { Base } from 'src/utils/base';
-export declare class CoinEntity extends Base {
+export declare class CoinEntity {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
     name?: string;
     description?: string;
     issuingCountry?: string;

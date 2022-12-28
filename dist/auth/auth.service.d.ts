@@ -12,26 +12,26 @@ export declare class AuthService {
     loginUser(dto: LoginUserDto): Promise<{
         accessToken: string;
         refreshToken: string;
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
         login: string;
         password: string;
         cart: import("../cart/entities/cart.entity").CartEntity[];
         isAdmin: boolean;
         avatarUrl?: boolean;
-        id: number;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     registerUser(dto: RegUserDto): Promise<{
         accessToken: string;
         refreshToken: string;
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
         login: string;
         password: string;
         cart: import("../cart/entities/cart.entity").CartEntity[];
         isAdmin: boolean;
         avatarUrl?: boolean;
-        id: number;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     validateUser(dto: LoginUserDto): Promise<UserEntity>;
 }

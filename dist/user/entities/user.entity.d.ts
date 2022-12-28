@@ -1,6 +1,8 @@
 import { CartEntity } from 'src/cart/entities/cart.entity';
-import { Base } from 'src/utils/base';
-export declare class UserEntity extends Base {
+export declare class UserEntity {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
     login: string;
     password: string;
     cart: CartEntity[];

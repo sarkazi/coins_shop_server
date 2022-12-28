@@ -1,10 +1,27 @@
 import { CartEntity } from 'src/cart/entities/cart.entity'
 import { CategoryEntity } from 'src/catedories/entities/catedory.entity'
-import { Base } from 'src/utils/base'
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
+//import { Base } from 'src/utils/base'
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 @Entity('coins')
-export class CoinEntity extends Base {
+export class CoinEntity {
+  @PrimaryGeneratedColumn()
+  id: number
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  createdAt: Date
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  updatedAt: Date
+
   @Column({ nullable: true })
   name?: string
 

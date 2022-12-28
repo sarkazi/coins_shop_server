@@ -12,10 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartEntity = void 0;
 const coin_entity_1 = require("../../coins/entities/coin.entity");
 const user_entity_1 = require("../../user/entities/user.entity");
-const base_1 = require("../../utils/base");
 const typeorm_1 = require("typeorm");
-let CartEntity = class CartEntity extends base_1.Base {
+let CartEntity = class CartEntity {
 };
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], CartEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)({ name: 'created_at', type: 'timestamp' }),
+    __metadata("design:type", Date)
+], CartEntity.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at', type: 'timestamp' }),
+    __metadata("design:type", Date)
+], CartEntity.prototype, "updatedAt", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (user) => user.cart),
     __metadata("design:type", user_entity_1.UserEntity)

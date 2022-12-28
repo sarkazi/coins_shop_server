@@ -11,10 +11,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryEntity = void 0;
 const coin_entity_1 = require("../../coins/entities/coin.entity");
-const base_1 = require("../../utils/base");
 const typeorm_1 = require("typeorm");
-let CategoryEntity = class CategoryEntity extends base_1.Base {
+let CategoryEntity = class CategoryEntity {
 };
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], CategoryEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)({ name: 'created_at', type: 'timestamp' }),
+    __metadata("design:type", Date)
+], CategoryEntity.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at', type: 'timestamp' }),
+    __metadata("design:type", Date)
+], CategoryEntity.prototype, "updatedAt", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)

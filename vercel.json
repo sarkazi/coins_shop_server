@@ -1,5 +1,14 @@
 {
   "version": 2,
+  "env": {
+    "PORT": "coins-shop-server-kg5c.vercel.app",
+    "DB_HOST": "localhost",
+    "DB_PORT": "3306",
+    "DB_USERNAME": "root",
+    "DB_PASSWORD": "8hdsfHF7FhjdsG7yjh6-FJDyg",
+    "DB_NAME": "coins_info",
+    "JWT_SECRET": "fjds6wo94/ftg73jpfid"
+  },
   "builds": [
     {
       "src": "src/main.ts",
