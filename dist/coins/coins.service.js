@@ -56,22 +56,61 @@ let CoinsService = class CoinsService {
             throw new common_1.NotFoundException('Монета не найдена');
         return coin;
     }
-    async findAll(sort) {
-        return await this.coinRepo.find({
-            relations: {
-                category: true,
-                cart: {
-                    user: true,
-                },
-            },
-            order: {
-                views: sort,
-            },
-        });
+    async findAll(sort, mainInfo, country, metal, quality, priceFrom, priceTo, yearFrom, yearTo) {
+        const qb = this.coinRepo
+            .createQueryBuilder('c')
+            .leftJoin('c.category', 'category')
+            .leftJoin('c.cart', 'cart')
+            .leftJoin('cart.user', 'user')
+            .orderBy('c.views', sort)
+            .select(['c', 'category', 'cart', 'user']);
+        if (mainInfo) {
+            const newMainInfo = decodeURIComponent(mainInfo);
+            qb.andWhere('c.name like :name', {
+                name: `%${newMainInfo}%`,
+            }).orWhere('c.description like :description', {
+                description: `%${newMainInfo}%`,
+            });
+        }
+        if (country) {
+            const newCountry = decodeURIComponent(country);
+            qb.andWhere('c.issuingCountry = :country', {
+                country: newCountry,
+            });
+        }
+        if (metal) {
+            const newMetal = decodeURIComponent(metal);
+            qb.andWhere('c.composition = :metal', { metal: newMetal });
+        }
+        if (quality) {
+            const newQuality = decodeURIComponent(quality);
+            qb.andWhere('c.quality = :quality', { quality: newQuality });
+        }
+        if (priceTo && !priceFrom) {
+            qb.andWhere({ price: (0, typeorm_2.LessThanOrEqual)(priceTo) });
+        }
+        if (priceFrom && !priceTo) {
+            qb.andWhere({ price: (0, typeorm_2.MoreThanOrEqual)(priceFrom) });
+        }
+        if (priceFrom && priceTo) {
+            qb.andWhere({ price: (0, typeorm_2.MoreThanOrEqual)(priceFrom) }).andWhere({
+                price: (0, typeorm_2.LessThanOrEqual)(priceTo),
+            });
+        }
+        if (yearTo && !yearFrom) {
+            qb.andWhere({ year: (0, typeorm_2.LessThanOrEqual)(yearTo) });
+        }
+        if (yearFrom && !yearTo) {
+            qb.andWhere({ year: (0, typeorm_2.MoreThanOrEqual)(yearFrom) });
+        }
+        if (yearFrom && yearTo) {
+            qb.andWhere({ year: (0, typeorm_2.MoreThanOrEqual)(yearFrom) }).andWhere({
+                year: (0, typeorm_2.LessThanOrEqual)(yearTo),
+            });
+        }
+        return qb.getMany();
     }
     async findAllByCat(cat_id, take, skip) {
-        const takee = take || 10;
-        const skipp = skip || 0;
         const coins = await this.coinRepo.findAndCount({
             where: {
                 category: { id: cat_id },
@@ -85,8 +124,8 @@ let CoinsService = class CoinsService {
             order: {
                 createdAt: 'DESC',
             },
-            take: takee,
-            skip: skipp,
+            take: take && take === 'Все' ? null : +take,
+            skip: skip && take === 'Все' ? null : +skip,
         });
         if (!coins)
             throw new common_1.NotFoundException('В этой категории нет ни одной монеты. Мы скоро это исправим!');

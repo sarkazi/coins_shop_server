@@ -27,6 +27,7 @@ import { FileDto } from 'src/file/file.dto'
 import { PutCoinDto } from './dto/put-coin.dto'
 import { FindCoinDto } from './dto/find-coin.dto'
 import { DeleteCoinDto } from './dto/delete-coin.dto'
+import { SearchTermDto } from './dto/search-term.dto'
 
 @Controller('coins')
 export class CoinsController {
@@ -34,8 +35,28 @@ export class CoinsController {
 
   @HttpCode(200)
   @Get()
-  findAll(@Query('sort') sort?: 'ASC' | 'DESC') {
-    return this.coinsService.findAll(sort)
+  findAll(
+    @Query('sort') sort?: 'ASC' | 'DESC',
+    @Query('mainInfo') mainInfo?: string,
+    @Query('country') country?: string,
+    @Query('metal') metal?: string,
+    @Query('quality') quality?: string,
+    @Query('priceFrom') priceFrom?: string,
+    @Query('priceTo') priceTo?: string,
+    @Query('yearFrom') yearFrom?: string,
+    @Query('yearTo') yearTo?: string,
+  ) {
+    return this.coinsService.findAll(
+      sort,
+      mainInfo,
+      country,
+      metal,
+      quality,
+      priceFrom,
+      priceTo,
+      yearFrom,
+      yearTo,
+    )
   }
 
   @HttpCode(200)
@@ -51,7 +72,7 @@ export class CoinsController {
     @Query('take') take?: string,
     @Query('skip') skip?: string,
   ) {
-    return this.coinsService.findAllByCat(id, +take, +skip)
+    return this.coinsService.findAllByCat(id, take, skip)
   }
 
   @HttpCode(200)
@@ -84,7 +105,6 @@ export class CoinsController {
   @HttpCode(200)
   @Patch('/delete-from-cart')
   deleteFromCart(@Body() dto: DeleteCoinDto) {
-    console.log(dto)
     return this.coinsService.deleteCoinFromCart(dto)
   }
 

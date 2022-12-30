@@ -24,14 +24,14 @@ let CoinsController = class CoinsController {
     constructor(coinsService) {
         this.coinsService = coinsService;
     }
-    findAll(sort) {
-        return this.coinsService.findAll(sort);
+    findAll(sort, mainInfo, country, metal, quality, priceFrom, priceTo, yearFrom, yearTo) {
+        return this.coinsService.findAll(sort, mainInfo, country, metal, quality, priceFrom, priceTo, yearFrom, yearTo);
     }
     findOne(id) {
         return this.coinsService.findOneById(id);
     }
     findByCat(id, take, skip) {
-        return this.coinsService.findAllByCat(id, +take, +skip);
+        return this.coinsService.findAllByCat(id, take, skip);
     }
     findSimilar(id) {
         return this.coinsService.findSimilarCoins(id);
@@ -46,7 +46,6 @@ let CoinsController = class CoinsController {
         return this.coinsService.putCoinInCart(dto);
     }
     deleteFromCart(dto) {
-        console.log(dto);
         return this.coinsService.deleteCoinFromCart(dto);
     }
     delete(id) {
@@ -63,8 +62,16 @@ __decorate([
     (0, common_1.HttpCode)(200),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('sort')),
+    __param(1, (0, common_1.Query)('mainInfo')),
+    __param(2, (0, common_1.Query)('country')),
+    __param(3, (0, common_1.Query)('metal')),
+    __param(4, (0, common_1.Query)('quality')),
+    __param(5, (0, common_1.Query)('priceFrom')),
+    __param(6, (0, common_1.Query)('priceTo')),
+    __param(7, (0, common_1.Query)('yearFrom')),
+    __param(8, (0, common_1.Query)('yearTo')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, String, String, String, String, String, String, String, String]),
     __metadata("design:returntype", void 0)
 ], CoinsController.prototype, "findAll", null);
 __decorate([

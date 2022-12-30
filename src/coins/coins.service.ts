@@ -5,7 +5,14 @@ import { CategoriesService } from 'src/catedories/catedories.service'
 import { FileDto } from 'src/file/file.dto'
 import { FileService } from 'src/file/file.service'
 import { UserService } from 'src/user/user.service'
-import { Equal, LessThan, LessThanOrEqual, MoreThan, Repository } from 'typeorm'
+import {
+  Equal,
+  LessThan,
+  LessThanOrEqual,
+  MoreThan,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm'
 import { DeleteCoinDto } from './dto/delete-coin.dto'
 import { FindCoinDto } from './dto/find-coin.dto'
 import { PutCoinDto } from './dto/put-coin.dto'
@@ -40,24 +47,75 @@ export class CoinsService {
     return coin
   }
 
-  async findAll(sort?: 'ASC' | 'DESC') {
-    return await this.coinRepo.find({
-      relations: {
-        category: true,
-        cart: {
-          user: true,
-        },
-      },
-      order: {
-        views: sort,
-      },
-    })
+  async findAll(
+    sort?: 'ASC' | 'DESC',
+    mainInfo?: string,
+    country?: string,
+    metal?: string,
+    quality?: string,
+    priceFrom?: string,
+    priceTo?: string,
+    yearFrom?: string,
+    yearTo?: string,
+  ) {
+    const qb = this.coinRepo
+      .createQueryBuilder('c')
+      .leftJoin('c.category', 'category')
+      .leftJoin('c.cart', 'cart')
+      .leftJoin('cart.user', 'user')
+      .orderBy('c.views', sort)
+      .select(['c', 'category', 'cart', 'user'])
+
+    if (mainInfo) {
+      const newMainInfo = decodeURIComponent(mainInfo)
+      qb.andWhere('c.name like :name', {
+        name: `%${newMainInfo}%`,
+      }).orWhere('c.description like :description', {
+        description: `%${newMainInfo}%`,
+      })
+    }
+
+    if (country) {
+      const newCountry = decodeURIComponent(country)
+      qb.andWhere('c.issuingCountry = :country', {
+        country: newCountry,
+      })
+    }
+    if (metal) {
+      const newMetal = decodeURIComponent(metal)
+      qb.andWhere('c.composition = :metal', { metal: newMetal })
+    }
+    if (quality) {
+      const newQuality = decodeURIComponent(quality)
+      qb.andWhere('c.quality = :quality', { quality: newQuality })
+    }
+    if (priceTo && !priceFrom) {
+      qb.andWhere({ price: LessThanOrEqual(priceTo) })
+    }
+    if (priceFrom && !priceTo) {
+      qb.andWhere({ price: MoreThanOrEqual(priceFrom) })
+    }
+    if (priceFrom && priceTo) {
+      qb.andWhere({ price: MoreThanOrEqual(priceFrom) }).andWhere({
+        price: LessThanOrEqual(priceTo),
+      })
+    }
+    if (yearTo && !yearFrom) {
+      qb.andWhere({ year: LessThanOrEqual(yearTo) })
+    }
+    if (yearFrom && !yearTo) {
+      qb.andWhere({ year: MoreThanOrEqual(yearFrom) })
+    }
+    if (yearFrom && yearTo) {
+      qb.andWhere({ year: MoreThanOrEqual(yearFrom) }).andWhere({
+        year: LessThanOrEqual(yearTo),
+      })
+    }
+
+    return qb.getMany()
   }
 
-  async findAllByCat(cat_id: number, take?: number, skip?: number) {
-    const takee = take || 10
-    const skipp = skip || 0
-
+  async findAllByCat(cat_id: number, take?: string, skip?: string) {
     const coins = await this.coinRepo.findAndCount({
       where: {
         category: { id: cat_id },
@@ -71,8 +129,8 @@ export class CoinsService {
       order: {
         createdAt: 'DESC',
       },
-      take: takee,
-      skip: skipp,
+      take: take && take === 'Все' ? null : +take,
+      skip: skip && take === 'Все' ? null : +skip,
     })
 
     if (!coins)

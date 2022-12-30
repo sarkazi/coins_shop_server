@@ -6,7 +6,7 @@ import { DeleteCoinDto } from './dto/delete-coin.dto';
 export declare class CoinsController {
     private readonly coinsService;
     constructor(coinsService: CoinsService);
-    findAll(sort?: 'ASC' | 'DESC'): Promise<import("./entities/coin.entity").CoinEntity[]>;
+    findAll(sort?: 'ASC' | 'DESC', mainInfo?: string, country?: string, metal?: string, quality?: string, priceFrom?: string, priceTo?: string, yearFrom?: string, yearTo?: string): Promise<import("./entities/coin.entity").CoinEntity[]>;
     findOne(id: number): Promise<import("./entities/coin.entity").CoinEntity>;
     findByCat(id: number, take?: string, skip?: string): Promise<[import("./entities/coin.entity").CoinEntity[], number]>;
     findSimilar(id: number): Promise<import("./entities/coin.entity").CoinEntity[]>;

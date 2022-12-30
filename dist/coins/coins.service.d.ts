@@ -16,8 +16,8 @@ export declare class CoinsService {
     private readonly cartService;
     constructor(coinRepo: Repository<CoinEntity>, catService: CategoriesService, fileService: FileService, userService: UserService, cartService: CartService);
     findOneById(coin_id: number): Promise<CoinEntity>;
-    findAll(sort?: 'ASC' | 'DESC'): Promise<CoinEntity[]>;
-    findAllByCat(cat_id: number, take?: number, skip?: number): Promise<[CoinEntity[], number]>;
+    findAll(sort?: 'ASC' | 'DESC', mainInfo?: string, country?: string, metal?: string, quality?: string, priceFrom?: string, priceTo?: string, yearFrom?: string, yearTo?: string): Promise<CoinEntity[]>;
+    findAllByCat(cat_id: number, take?: string, skip?: string): Promise<[CoinEntity[], number]>;
     findAllByCart(cart_id: number): Promise<CoinEntity[]>;
     createCoin(): Promise<CoinEntity>;
     updateCoin(dto: UpdateCoinDto, id: number, files?: FileDto): Promise<CoinEntity>;
